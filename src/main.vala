@@ -1,47 +1,32 @@
-/*math functions*/
-public float multiply(float a , float b){
-    return a * b;
-}
-public float addNum(float a , float b){
-    return a + b;
-}
-public float sub(float a , float b){
-    return a - b;
-}
-public float divide(float a,float b){
-    return a/b;
-}
 /* end Math  */ 
 public class window:Gtk.ApplicationWindow{
     string[] calcs={};
     
     public string perform_cal(){
-        string ansr = "";
-        for(var i =0; i <= this.calcs.length;i++){
-          if((i+1)%2 == 0){
-            
-            switch(this.calcs[i]){
+        
+        float answer = float.parse(this.calcs[0]);
+        for (int i = 0; i < this.calcs.length; i++) {
+                switch (this.calcs[i]) {
                 case "*":
-                    ansr = multiply(float.parse(this.calcs[i-1]),float.parse(this.calcs[i+1])).to_string();
-                break;
+                    answer *= float.parse(this.calcs[i+1]);
+                    break;
                 case "+":
-                    ansr = addNum(float.parse(this.calcs[i-1]),float.parse(this.calcs[i+1])).to_string();
+                    answer += float.parse(this.calcs[i+1]);
                     break;
                 case "-":
-                    ansr = sub(float.parse(this.calcs[i-1]),float.parse(this.calcs[i+1])).to_string();
+                    answer -= float.parse(this.calcs[i+1]);
                     break;  
                 case "/":
-                    ansr = divide(float.parse(this.calcs[i-1]),float.parse(this.calcs[i+1])).to_string();
+                    answer = answer/float.parse(this.calcs[i+1]);
                     break;
                 default:
-                break;
-
+                    break;
+                }
             }
-        }
             
-        }
-        this.calcs = {};
-        return ansr;
+        print(answer.to_string());
+        this.calcs={};
+        return answer.to_string();
     }
     string original;
     public void clickButton(string lab,Gtk.Entry entry){
@@ -97,9 +82,9 @@ public class window:Gtk.ApplicationWindow{
         }
         else if(lab == "="){
             this.calcs +=org_tex;
-            string answer = this.perform_cal();
+            string pAnswer = this.perform_cal();
             
-            entry.set_text(answer);
+            entry.set_text(pAnswer);
         }
         else{
             entry.set_text(org_tex+lab);    
@@ -137,9 +122,9 @@ public class window:Gtk.ApplicationWindow{
         entry.activate.connect(()=>{
 
             this.calcs +=original;
-            string answer = this.perform_cal();
+            string pAnswer = this.perform_cal();
             
-            entry.set_text(answer);
+            entry.set_text(pAnswer);
 
         });
         row0.pack_start(entry,true,true,0);
